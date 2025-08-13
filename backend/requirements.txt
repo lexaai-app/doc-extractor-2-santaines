@@ -1,0 +1,26 @@
+# FastAPI: Framework web moderno e rápido para Python
+fastapi==0.104.1
+
+# Uvicorn: Servidor ASGI (Asynchronous Server Gateway Interface) para rodar FastAPI
+uvicorn==0.24.0
+
+# Pydantic: Validação de dados usando Python type hints
+pydantic==2.5.0
+pydantic-settings
+# httpx: Cliente HTTP assíncrono (similar ao requests, mas async)
+httpx==0.25.2
+
+# python-multipart: Para processar uploads de arquivos
+python-multipart==0.0.6
+
+# python-dotenv: Carregar variáveis de ambiente de arquivo .env
+python-dotenv==1.0.0
+
+# Pillow: Processamento de imagens (validação e conversão)
+Pillow==10.1.0
+
+# PyPDF2: Leitura de arquivos PDF
+PyPDF2==3.0.1
+
+# python-jose: Para JWT tokens (se precisar autenticação futura)
+python-jose[cryptography]==3.3.0

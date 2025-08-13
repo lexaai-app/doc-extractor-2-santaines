@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrator de Documentos - 2º Ofício de Justiça - Nova Iguaçu</title>
+    <meta name="description" content="Ferramenta profissional para extração de dados de documentos de identificação - Cartório Fernando Dias - 2º Tabelionato de Notas">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzMxNzNkYyIvPgo8cGF0aCBkPSJNOCAxMGgxNnYySDh2LTJ6bTAgNGgxMnYySDh2LTJ6bTAgNGgxNnYySDh2LTJ6IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    
+    
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header com Logo -->
+        <div class="header">
+            <img src="/assets/cartorio.png" alt="2º Ofício de Justiça - Nova Iguaçu" class="logo">
+            <h1>Extrator de Documentos</h1>
+            <p>2º Ofício de Justiça - Nova Iguaçu - Ferramenta profissional para extração automatizada de dados de documentos</p>
+        </div>
+
+        <!-- Instruções de Uso -->
+        <div class="instructions">
+            <h4>📋 Como usar a ferramenta:</h4>
+            <ol>
+                <li><strong>Opcional:</strong> Escolha e configure uma API (Claude ou Gemini) para extração automática</li>
+                <li><strong>Carregar:</strong> Clique na área de upload ou arraste o documento (RG, CPF, CNH, etc.)</li>
+                <li><strong>Processar:</strong> Clique em "Extrair Dados" para iniciar o processamento</li>
+                <li><strong>Preencher:</strong> Complete os campos manualmente usando a pré-visualização (se necessário)</li>
+                <li><strong>Copiar:</strong> Use os botões "Copiar" para transferir dados para seu sistema</li>
+            </ol>
+        </div>
+
+        <!-- Seção da API -->
+        <div id="apiSection" class="api-section">
+            <h3>🔑 Configuração de API para Extração Automática (Opcional)</h3>
+            
+            <div id="apiDisabledState">
+                <div class="api-status disabled">
+                    ⚪ API Desabilitada - Modo Manual Ativo
+                </div>
+                <div class="api-controls">
+                    <button id="enableApiBtn" class="btn btn-primary">🔓 Habilitar API para Extração Automática</button>
+                </div>
+            </div>
+            
+            <div id="apiInputState" style="display: none;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--accent-cyan);">
+                        Escolha o provedor de IA:
+                    </label>
+                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="apiProvider" value="claude" checked style="accent-color: var(--accent-cyan);">
+                            <span>🤖 Claude (Anthropic)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="apiProvider" value="gemini" style="accent-color: var(--accent-cyan);">
+                            <span>💎 Gemini (Google)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="claudeApiInput">
+                    <label for="apiKey">Cole sua chave da API Claude:</label>
+                    <input 
+                        type="password" 
+                        id="apiKey" 
+                        class="api-input" 
+                        placeholder="sk-ant-api03-..." 
+                    >
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Obtenha em: <a href="https://console.anthropic.com" target="_blank" style="color: var(--accent-cyan);">console.anthropic.com</a>
+                    </p>
+                </div>
+                
+                <div id="geminiApiInput" style="display: none;">
+                    <label for="geminiKey">Cole sua chave da API Gemini:</label>
+                    <input 
+                        type="password" 
+                        id="geminiKey" 
+                        class="api-input" 
+                        placeholder="AIza..." 
+                    >
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Obtenha em: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--accent-cyan);">aistudio.google.com</a>
+                    </p>
+                </div>
+                
+                <div class="api-controls">
+                    <button id="confirmApiBtn" class="btn btn-success">✅ Confirmar e Ativar</button>
+                    <button id="cancelApiBtn" class="btn btn-secondary">❌ Cancelar</button>
+                </div>
+            </div>
+            
+            <div id="apiEnabledState" style="display: none;">
+                <div class="api-status enabled">
+                    <span id="providerStatus">✅ API Habilitada - Extração Automática Ativa</span>
+                </div>
+                <div class="api-controls">
+                    <button id="disableApiBtn" class="btn btn-danger">🔒 Desabilitar API</button>
+                </div>
+            </div>
+            
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted); border-top: 1px solid rgba(49, 115, 220, 0.2); padding-top: 15px;">
+                <strong>Sem API:</strong> Campos editáveis para preenchimento manual<br>
+                <strong>Com Claude:</strong> Extração de alta precisão com IA avançada<br>
+                <strong>Com Gemini:</strong> Extração rápida e eficiente do Google
+            </p>
+        </div>
+
+        <!-- Área de Upload -->
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-icon">📄</div>
+            <h3>Carregar Documento</h3>
+            <p>Clique aqui ou arraste o arquivo para esta área</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Suporte para JPG, PNG e PDF (máximo 10MB)</p>
+            <button class="btn btn-primary" type="button" style="margin-top: 15px;">📁 Selecionar Arquivo</button>
+            <input type="file" id="fileInput" accept="image/*,.pdf">
+        </div>
+
+        <!-- Informações do Arquivo -->
+        <div id="fileInfo" class="file-info">
+            <h4>📄 Arquivo Carregado</h4>
+            <p><strong>Nome:</strong> <span id="fileName"></span></p>
+            <p><strong>Tamanho:</strong> <span id="fileSize"></span></p>
+            <div style="margin-top: 15px;">
+                <button id="extractBtn" class="btn btn-success">🔍 Extrair Dados do Documento</button>
+            </div>
+        </div>
+
+        <!-- Alertas -->
+        <div id="alertContainer"></div>
+        
+        <!-- Loading -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <span id="loadingText">Processando documento...</span>
+        </div>
+
+        <!-- Grid de Conteúdo -->
+        <div id="contentGrid" class="content-grid" style="display: none;">
+            <!-- Pré-visualização -->
+            <div class="section-card">
+                <h3>👁️ Pré-visualização do Documento</h3>
+                <div id="preview"></div>
+            </div>
+            
+            <!-- Dados Extraídos -->
+            <div class="section-card">
+                <h3>📋 Dados para Extração</h3>
+                <div id="extractedData"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2024 2º Ofício de Justiça - Nova Iguaçu</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Ferramenta Profissional de Extração de Documentos</p>
+        </div>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>
